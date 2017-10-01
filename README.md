@@ -33,24 +33,27 @@ function render_my_cool_plugin(){
 }
 ```
 
-## check it
+check it
+========= 
 
 ![](screenshots/occupied_screenshot.png?raw=true "screenshot")
 
-## todo
+todo
+=====
 
 * break out styles
 * add locking hooks 
 * enable lock dialog customization
 * rethink using vue for a modal and some event handlers
 
-## developers
+developers
+===========
 
 1. clone the repo
-2. `npm install`
-3. `npm run build` to generate the occupied.js file
+2. `cd occupied && npm install & npm run build`
 
-## warnings
+warnings
+==========
 
 this project is currently in development.
 
@@ -59,6 +62,9 @@ installing the plugin without changing it will:
 * add a demo menu item to your wordpress admin.
 * change the wordpress heartbeat frequency to 5 seconds.
 
+license
+========
 
+GPLv3
 
 
