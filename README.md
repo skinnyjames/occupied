@@ -37,7 +37,8 @@ function render_my_cool_plugin(){
 
 * break out styles
 * add locking hooks 
-* enable lock dialog customizatioin
+* enable lock dialog customization
+* rethink using vue for a modal and some event handlers
 
 ## developers
 
