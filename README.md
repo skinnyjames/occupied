@@ -33,6 +33,10 @@ function render_my_cool_plugin(){
 }
 ```
 
+## check it
+
+![](/screenshots/occupied_screenshot.png | width=400)
+
 ## todo
 
 * break out styles
