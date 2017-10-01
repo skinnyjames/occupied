@@ -46,6 +46,11 @@ function render_my_cool_plugin(){
 2. `npm install`
 3. `npm run build` to generate the occupied.js file
 
+## warnings
+
+this project is currently in development
+installing the plugin without changing it will add a demo menu item to your wordpress admin and change the wordpress heartbeat frequency to 5 seconds.
+
 
 
 
