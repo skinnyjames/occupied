@@ -1,5 +1,5 @@
 var Vue = require('vue');
-window.Occupied = (function(){
+window.Occupied = window.Occupied || (function(){
   return {
     init: function(args){
       //validate args
