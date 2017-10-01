@@ -35,7 +35,7 @@ function render_my_cool_plugin(){
 
 ## check it
 
-![](/screenshots/occupied_screenshot.png | width=400)
+![](screenshots/occupied_screenshot.png?raw=true "screenshot")
 
 ## todo
 
