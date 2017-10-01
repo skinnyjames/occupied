@@ -11,7 +11,7 @@ or
 
 include the plugin in the root folder of your own plugin and require it with 
 
-`require_once('occupied/occupied.php');`
+`require_once('occupied-installation-folder/occupied.php');`
 
 ## usage
 
