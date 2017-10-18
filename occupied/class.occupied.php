@@ -69,8 +69,12 @@ class Occupied {
     $json_lock = json_encode($lock);
     $app_el = "occupied-lock-dialog";
     $screen_id = $current_screen->id;
+
+    // Make redirect url
+    global $wp;
+    $current_url = add_query_arg( $_SERVER['QUERY_STRING'], '', admin_url( 'admin.php' ));
     $referer = wp_get_referer();
-    if (!$referer){
+    if (!$referer || $referer == $current_url){
       $referer = get_admin_url();
     }
     // Output Vue App
