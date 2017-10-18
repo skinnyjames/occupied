@@ -17,7 +17,7 @@ class Occupied {
   }
   
   public static function heartbeat_frequency( $settings ){
-    //$settings['interval'] = 5;
+    $settings['interval'] = 5;
     return $settings;
   }
   
