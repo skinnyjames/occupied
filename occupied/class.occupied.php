@@ -17,7 +17,7 @@ class Occupied {
   }
   
   public static function heartbeat_frequency( $settings ){
-    $settings['interval'] = 5;
+    //$settings['interval'] = 5;
     return $settings;
   }
   
@@ -81,11 +81,11 @@ class Occupied {
           <div class="occupied-dialog-wrapper">
             <div class="occupied-dialog-container">
               <div style="display:flex;flex-direction:column;min-height:10vh;justify-content:space-between;">
-                <div class="avatar-and-body" style="display:flex;align-items:center;">
+                <div class="avatar-and-body" style="display:flex;align-items:flex-start;">
                   <img :src="lock.owner_avatar_url" style="width:96px;height:96px;"/>
                   <div class="occupied-dialog-text" style="margin-left:1em;">
-                    <h1>We are so, so, sorry</h1> 
-                    <p>
+                    <h3 style="margin-bottom:0;">We are so, so, sorry</h3> 
+                    <p style="margin-top:0;">
                       <span style="font-size:larger;font-weight:bold;">{{lock.owner_display_name}}</span> is currently editing this page
                       <br>If you take over, {{lock.owner_display_name}} will be locked out of editing this page.
                     </p>
@@ -133,9 +133,14 @@ class Occupied {
       
     </style>
     <script type="text/javascript">
-      jQuery(document).ready(function(){
-        Occupied.init({el: '$app_el', lock: $json_lock, screen: '$screen_id', back: '$referer'});
-      });
+      if($json_lock){
+        jQuery(document).ready(function(){
+          Occupied.init({el: '$app_el', lock: $json_lock, screen: '$screen_id', back: '$referer'});
+        });
+      }else{
+        console.log('locking not working', $json_lock);
+        alert('lock broken!');
+      }
     </script>
 HTML;
     echo $output;
