@@ -165,7 +165,7 @@ HTML;
   }
 
   // Create or update the padlock for the screen
-  public static function padlock_generate($screen_id, $take_over=false){
+  private static function padlock_generate($screen_id, $take_over=false){
 
     if(!$screen_id){ 
       return false;
@@ -204,7 +204,7 @@ HTML;
     return get_option(self::WP_OPTIONS_NAME);  
   }
 
-  public static function padlock_get($screen_id){
+  private static function padlock_get($screen_id){
     $keyring = self::keyring();
     if (!isset($keyring[$screen_id])){
       return null;
@@ -213,7 +213,7 @@ HTML;
     }
   }
 
-  public static function padlock_save($screen_id, $payload){
+  private static function padlock_save($screen_id, $payload){
     $keyring = self::keyring();
     $keyring[$screen_id] = $payload;
     return update_option(self::WP_OPTIONS_NAME, $keyring);
