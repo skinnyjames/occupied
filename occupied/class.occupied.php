@@ -8,17 +8,10 @@ class Occupied {
 
 
   public static function register_hooks(){
-    //Temp change heartbeat settings
-    add_filter('heartbeat_settings', 'Occupied::heartbeat_frequency', 10, 1); 
     //The rest
     add_action( 'current_screen', 'Occupied::protect_screen' ); 
     add_action('wp_ajax_occupied_take_over', 'Occupied::take_over');  
     add_filter('heartbeat_received', 'Occupied::heartbeat_received', 10, 2);
-  }
-  
-  public static function heartbeat_frequency( $settings ){
-    $settings['interval'] = 5;
-    return $settings;
   }
   
   public static function heartbeat_received($response, $data){
