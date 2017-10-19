@@ -54,7 +54,7 @@ todo
 
 * break out styles
 * add locking hooks 
-* enable lock dialog customization
+* ~~enable lock dialog customization~~
 * rethink using vue for a modal and some event handlers
 
 developers
@@ -67,11 +67,7 @@ warnings
 ==========
 
 this project is currently in development.
-
-installing the plugin without changing it will:
-
-* add a demo menu item to your wordpress admin.
-* change the wordpress heartbeat frequency to 5 seconds.
+feedback and pull requests welcome!
 
 license
 ========
