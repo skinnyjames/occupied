@@ -20,19 +20,30 @@ In the function for your custom page, just use `Occupied::protect()` to enable l
 ```php 
 add_action('admin_menu', 'register_my_plugin_menu');
 
-function register_my_plugin__menu(){
+function register_my_plugin_menu(){
   add_menu_page("My Cool Plugin", "cool-plugin", "manage_options", "my_cool_plugin_page", "render_my_cool_plugin", "dashicons-heart", 7);
 }
 
 function render_my_cool_plugin(){
   // Occupied::protect enables locking on this page
   // and returns a lock array
-  $lock = Occupied::protect();
+  // optional: pass a message to the protect method to appear on the lock modal.
+  $lock = Occupied::protect("Cool Plugin Occupied!");
 
   echo "<h1>My Cool Plugin!</h1>";
 }
 ```
+In another action, you can check whether a screen is occupied by the current user
 
+```php
+function some_other_action(){
+  if(Occupied::is_authorized('toplevel_page_my_cool_plugin_page')){
+    // business logic, save to database, etc..
+  }else{
+    // return error
+  }
+}
+```
 check it
 ========= 
 
@@ -43,7 +54,7 @@ todo
 
 * break out styles
 * add locking hooks 
-* enable lock dialog customization
+* ~~enable lock dialog customization~~
 * rethink using vue for a modal and some event handlers
 
 developers
@@ -56,11 +67,7 @@ warnings
 ==========
 
 this project is currently in development.
-
-installing the plugin without changing it will:
-
-* add a demo menu item to your wordpress admin.
-* change the wordpress heartbeat frequency to 5 seconds.
+feedback and pull requests welcome!
 
 license
 ========

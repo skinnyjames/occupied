@@ -5,27 +5,17 @@ class Occupied {
   const WP_OPTIONS_NAME = 'occupied_lock'; 
   const SESSION_LENGTH = "+5 minutes";
 
-
+  private static $modal_header_text = 'We are so, so, sorry.';
 
   public static function register_hooks(){
-    //Temp change heartbeat settings
-    add_filter('heartbeat_settings', 'Occupied::heartbeat_frequency', 10, 1); 
     //The rest
     add_action( 'current_screen', 'Occupied::protect_screen' ); 
     add_action('wp_ajax_occupied_take_over', 'Occupied::take_over');  
     add_filter('heartbeat_received', 'Occupied::heartbeat_received', 10, 2);
   }
   
-  public static function heartbeat_frequency( $settings ){
-    $settings['interval'] = 5;
-    return $settings;
-  }
-  
   public static function heartbeat_received($response, $data){
-    if ( !isset( $data["occupied_data"]["screen"]) ){
-      $response["test"] = "hello";
-      return $response;
-    }else{
+    if ( isset( $data["occupied_data"]["screen"]) ){
       $screen = $data["occupied_data"]["screen"]; 
       $response["occupied_lock"] = self::padlock_generate($screen);
       return $response;
@@ -38,9 +28,7 @@ class Occupied {
     echo json_encode($lock);
     wp_die();
   }
-  //TODO: implement redirect
 
-  //TODO: use page load hooks
   // Filter that runssss
   public static function protect_screen(){
     $current_screen = get_current_screen();
@@ -69,8 +57,13 @@ class Occupied {
     $json_lock = json_encode($lock);
     $app_el = "occupied-lock-dialog";
     $screen_id = $current_screen->id;
+    $header_text = self::$modal_header_text;
+
+    // Make redirect url
+    global $wp;
+    $current_url = add_query_arg( $_SERVER['QUERY_STRING'], '', admin_url( 'admin.php' ));
     $referer = wp_get_referer();
-    if (!$referer){
+    if (!$referer || $referer == $current_url){
       $referer = get_admin_url();
     }
     // Output Vue App
@@ -81,11 +74,11 @@ class Occupied {
           <div class="occupied-dialog-wrapper">
             <div class="occupied-dialog-container">
               <div style="display:flex;flex-direction:column;min-height:10vh;justify-content:space-between;">
-                <div class="avatar-and-body" style="display:flex;align-items:center;">
+                <div class="avatar-and-body" style="display:flex;align-items:flex-start;">
                   <img :src="lock.owner_avatar_url" style="width:96px;height:96px;"/>
                   <div class="occupied-dialog-text" style="margin-left:1em;">
-                    <h1>We are so, so, sorry</h1> 
-                    <p>
+                    <h3 style="margin-bottom:0;">$header_text</h3> 
+                    <p style="margin-top:0;">
                       <span style="font-size:larger;font-weight:bold;">{{lock.owner_display_name}}</span> is currently editing this page
                       <br>If you take over, {{lock.owner_display_name}} will be locked out of editing this page.
                     </p>
@@ -133,9 +126,14 @@ class Occupied {
       
     </style>
     <script type="text/javascript">
-      jQuery(document).ready(function(){
-        Occupied.init({el: '$app_el', lock: $json_lock, screen: '$screen_id', back: '$referer'});
-      });
+      if($json_lock){
+        jQuery(document).ready(function(){
+          Occupied.init({el: '$app_el', lock: $json_lock, screen: '$screen_id', back: '$referer'});
+        });
+      }else{
+        console.log('locking not working', $json_lock);
+        alert('lock broken!');
+      }
     </script>
 HTML;
     echo $output;
@@ -143,9 +141,27 @@ HTML;
 
 
   // Loads javascript into the page and generates popups on lock.
-  public static function protect(){
+  public static function protect($modal_header_text=null){
+    if($modal_header_text){
+      self::$modal_header_text = $modal_header_text;
+    }
     $screen = get_current_screen();
     return self::padlock_generate($screen->id);
+  }
+
+  // Checks whether a given page is owned by the current user
+  public static function is_authorized($screen=null){
+    if(!$screen){
+      $screen = get_current_screen()->id;
+    }
+    $current_user = wp_get_current_user(); 
+    $lock = self::padlock_get($screen);
+
+    if($lock && isset($lock["owner_id"]) && ($lock["owner_id"] === $current_user->ID)){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   // Create or update the padlock for the screen
@@ -204,6 +220,4 @@ HTML;
   }
 
 }
-
-    
 ?>

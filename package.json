@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify src-js/occupied.js > js/occupied.js"
+    "build": "browserify occupied/src-js/occupied.js > occupied/js/occupied.js"
   },
   "browser": {
     "vue": "vue/dist/vue.common.js"
