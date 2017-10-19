@@ -1,9 +1,18 @@
-occupied
-=========
+== occupied ==
+Contributors: williamtaft
+Tags: occupied, lock, custom
+Requires at least: 4.8.1
+Tested up to: 4.8.1
+Requires PHP: 5.2.4
+Stable tag: trunk
 
 custom page locking for WordPress admin screens
 
-## installation
+== Screenshots ==
+
+1. Demonstration
+
+== Installation ==
 
 put this plugin in the plugins directory of your wordpress installation
 
@@ -13,7 +22,7 @@ include the plugin in the root folder of your own plugin and require it with
 
 `require_once('occupied-installation-folder/occupied.php');`
 
-## usage
+== usage ==
 
 In the function for your custom page, just use `Occupied::protect()` to enable locking on that page.
 
@@ -44,34 +53,21 @@ function some_other_action(){
   }
 }
 ```
-check it
-========= 
 
-![](assets/screenshot-1.png?raw=true "screenshot")
+== Changelog ==
 
-todo
-=====
+* Initial upload
+
+== todo ==
 
 * break out styles
 * add locking hooks 
-* ~~enable lock dialog customization~~
 * rethink using vue for a modal and some event handlers
 
-developers
-===========
+== developers ==
 
-1. clone the repo
-2. `cd occupied && npm install & npm run build`
+This plugin is developed on [github](https://github.com/skinnyjames/occupied/)
 
-warnings
-==========
-
-this project is currently in development.
-feedback and pull requests welcome!
-
-license
-========
+== license ==
 
 GPLv3
-
-
