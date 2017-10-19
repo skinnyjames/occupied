@@ -9,7 +9,7 @@ class Occupied {
 
   public static function register_hooks(){
     //The rest
-    add_action( 'current_screen', 'Occupied::protect_screen' ); 
+    add_action('current_screen', 'Occupied::protect_screen'); 
     add_action('wp_ajax_occupied_take_over', 'Occupied::take_over');  
     add_filter('heartbeat_received', 'Occupied::heartbeat_received', 10, 2);
   }
@@ -45,9 +45,9 @@ class Occupied {
 
   public static function register_scripts(){
     wp_enqueue_script('occupied', plugins_url('/js/occupied.js', __FILE__), array('jquery'));
+    wp_enqueue_style('occupied', plugins_url('/css/occupied.css', __FILE__));
   }
   // Enqeue scripts, styles, echo 
-  // TODO: don't use vue?
   public static function register_padlock(){
 
     add_action( 'current_screen', 'Occupied::protect_screen' ); 
@@ -73,18 +73,18 @@ class Occupied {
         <div class="occupied-dialog-mask">
           <div class="occupied-dialog-wrapper">
             <div class="occupied-dialog-container">
-              <div style="display:flex;flex-direction:column;min-height:10vh;justify-content:space-between;">
-                <div class="avatar-and-body" style="display:flex;align-items:flex-start;">
-                  <img :src="lock.owner_avatar_url" style="width:96px;height:96px;"/>
-                  <div class="occupied-dialog-text" style="margin-left:1em;">
-                    <h3 style="margin-bottom:0;">$header_text</h3> 
-                    <p style="margin-top:0;">
-                      <span style="font-size:larger;font-weight:bold;">{{lock.owner_display_name}}</span> is currently editing this page
+              <div class="occupied-dialog-body">
+                <div class="occupied-avatar-body">
+                  <img :src="lock.owner_avatar_url"/>
+                  <div class="occupied-dialog-text">
+                    <h3>$header_text</h3> 
+                    <p>
+                      <span>{{lock.owner_display_name}}</span> is currently editing this page
                       <br>If you take over, {{lock.owner_display_name}} will be locked out of editing this page.
                     </p>
                   </div>
                 </div>
-                <div class="occupied-modal-actions" style="display:flex;justify-content: space-between;">
+                <div class="occupied-dialog-actions"> 
                   <a v-on:click.prevent="go_back" class="button" href="#">Leave</a>
                   <a v-on:click.prevent="take_over" class="button button-primary" href="#">Take Over</a>
                 </div> 
@@ -94,46 +94,10 @@ class Occupied {
         </div>  
       </template>
     </div>  
-    <style>
-      .occupied-dialog-mask {
-        position: fixed;
-        top: 0;
-        z-index: 99998;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0,0,0,.5);
-        display: flex;
-        justify-content: center;
-        transition: opacity .3s ease;
-      }
-      .occupied-dialog-wrapper {
-        /* = Why support this bad behavior?
-         * display: table-cell
-         * vertical-align: middle;
-        */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .occupied-dialog-container {
-        width: 450px;
-        padding: 20px 30px;
-        background-color: #fff;
-        border-radius: 2px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, .33); 
-        transition: all .3s ease;
-      }
-      
-    </style>
     <script type="text/javascript">
-      if($json_lock){
-        jQuery(document).ready(function(){
-          Occupied.init({el: '$app_el', lock: $json_lock, screen: '$screen_id', back: '$referer'});
-        });
-      }else{
-        console.log('locking not working', $json_lock);
-        alert('lock broken!');
-      }
+      jQuery(document).ready(function(){
+        Occupied.init({el: '$app_el', lock: $json_lock, screen: '$screen_id', back: '$referer'});
+      });
     </script>
 HTML;
     echo $output;

@@ -1,0 +1,59 @@
+.occupied-dialog-mask {
+  position: fixed;
+  top: 0;
+  z-index: 99998;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,.5);
+  display: flex;
+  justify-content: center;
+  transition: opacity .3s ease;
+}
+.occupied-dialog-wrapper {
+  /* = Why support this bad behavior?
+   * display: table-cell
+   * vertical-align: middle;
+  */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.occupied-dialog-container {
+  width: 450px;
+  padding: 20px 30px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .33); 
+  transition: all .3s ease;
+}
+.occupied-dialog-actions {
+  display: flex;
+  justify-content: space-between;
+}
+.occupied-dialog-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 10vh;  
+  justify-content: space-between;
+}
+.occupied-avatar-body {
+  display: flex;
+  align-items: flex-start;
+}
+.occupied-avatar-body img {
+  width: 96px;
+  height: 96px;
+}
+.occupied-dialog-text {
+  margin-left: 1em;
+}
+.occupied-dialog-text h3 {
+  margin-bottom: 0;  
+}
+.occupied-dialog-text p {
+  margin-top: 0;  
+}
+.occupied-dialog-text p span {
+  font-size:larger;
+  font-weight:bold;
+}
