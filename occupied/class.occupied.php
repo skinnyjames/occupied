@@ -150,6 +150,21 @@ HTML;
     return self::padlock_generate($screen->id);
   }
 
+  // Checks whether a given page is owned by the current user
+  public static function is_authorized($screen=null){
+    if(!$screen){
+      $screen = get_current_screen()->id;
+    }
+    $current_user = wp_get_current_user(); 
+    $lock = self::padlock_get($screen);
+
+    if($lock && isset($lock["owner_id"]) && ($lock["owner_id"] === $current_user->ID)){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   // Create or update the padlock for the screen
   public static function padlock_generate($screen_id, $take_over=false){
 
