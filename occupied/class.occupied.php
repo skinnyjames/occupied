@@ -5,7 +5,7 @@ class Occupied {
   const WP_OPTIONS_NAME = 'occupied_lock'; 
   const SESSION_LENGTH = "+5 minutes";
 
-
+  private static $modal_header_text = 'We are so, so, sorry.';
 
   public static function register_hooks(){
     //The rest
@@ -15,10 +15,7 @@ class Occupied {
   }
   
   public static function heartbeat_received($response, $data){
-    if ( !isset( $data["occupied_data"]["screen"]) ){
-      $response["test"] = "hello";
-      return $response;
-    }else{
+    if ( isset( $data["occupied_data"]["screen"]) ){
       $screen = $data["occupied_data"]["screen"]; 
       $response["occupied_lock"] = self::padlock_generate($screen);
       return $response;
@@ -31,9 +28,7 @@ class Occupied {
     echo json_encode($lock);
     wp_die();
   }
-  //TODO: implement redirect
 
-  //TODO: use page load hooks
   // Filter that runssss
   public static function protect_screen(){
     $current_screen = get_current_screen();
@@ -62,6 +57,7 @@ class Occupied {
     $json_lock = json_encode($lock);
     $app_el = "occupied-lock-dialog";
     $screen_id = $current_screen->id;
+    $header_text = self::$modal_header_text;
 
     // Make redirect url
     global $wp;
@@ -81,7 +77,7 @@ class Occupied {
                 <div class="avatar-and-body" style="display:flex;align-items:flex-start;">
                   <img :src="lock.owner_avatar_url" style="width:96px;height:96px;"/>
                   <div class="occupied-dialog-text" style="margin-left:1em;">
-                    <h3 style="margin-bottom:0;">We are so, so, sorry</h3> 
+                    <h3 style="margin-bottom:0;">$header_text</h3> 
                     <p style="margin-top:0;">
                       <span style="font-size:larger;font-weight:bold;">{{lock.owner_display_name}}</span> is currently editing this page
                       <br>If you take over, {{lock.owner_display_name}} will be locked out of editing this page.
@@ -145,7 +141,10 @@ HTML;
 
 
   // Loads javascript into the page and generates popups on lock.
-  public static function protect(){
+  public static function protect($modal_header_text=null){
+    if($modal_header_text){
+      self::$modal_header_text = $modal_header_text;
+    }
     $screen = get_current_screen();
     return self::padlock_generate($screen->id);
   }
@@ -221,6 +220,4 @@ HTML;
   }
 
 }
-
-    
 ?>
