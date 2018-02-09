@@ -193,8 +193,15 @@ HTML;
 
   private static function padlock_save($screen_id, $payload){
     $screen_id = sanitize_title_for_query($screen_id);
+    $valid_payload = array(
+      'owner_id' => intval($lock['owner_id']),
+      'updated_at' =>  intval($lock['updated_at']),
+      'owner_avatar_url' => sanitize_text_field($lock['owner_avatar_url']),
+      'owner_display_name' => sanitize_text_field($lock['owner_display_name']),
+    );
+
     $keyring = self::keyring();
-    $keyring[$screen_id] = $payload;
+    $keyring[$screen_id] = $valid_payload;
     return update_option(self::WP_OPTIONS_NAME, $keyring);
   }
 
