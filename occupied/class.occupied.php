@@ -1,4 +1,5 @@
 <?php 
+//TODO: add validation and db sanitization
 
 class Occupied {
   // Should store object in options table
@@ -17,6 +18,7 @@ class Occupied {
   public static function heartbeat_received($response, $data){
     if ( isset( $data["occupied_data"]["screen"]) ){
       $screen = $data["occupied_data"]["screen"]; 
+      $screen = sanitize_title_for_query($screen);
       $response["occupied_lock"] = self::padlock_generate($screen);
       return $response;
     } 
@@ -24,6 +26,8 @@ class Occupied {
 
   public static function take_over(){
     $screen_id = $_POST['screen'];
+    // Validate this input
+    $screen_id = sanitize_title_for_query($screen_id);
     $lock = self::padlock_generate($screen_id, true);
     echo json_encode($lock);
     wp_die();
@@ -61,7 +65,10 @@ class Occupied {
 
     // Make redirect url
     global $wp;
-    $current_url = add_query_arg( $_SERVER['QUERY_STRING'], '', admin_url( 'admin.php' ));
+    // sanitize query string
+    $query_string = htmlspecialchars($_SERVER['QUERY_STRING']);
+
+    $current_url = add_query_arg( $query_string, '', admin_url( 'admin.php' ));
     $referer = wp_get_referer();
     if (!$referer || $referer == $current_url){
       $referer = get_admin_url();
@@ -110,7 +117,11 @@ HTML;
       self::$modal_header_text = $modal_header_text;
     }
     $screen = get_current_screen();
-    return self::padlock_generate($screen->id);
+    if (!isset($screen)) {
+      return null;
+    }
+    echo json_encode(['hello',$screen_id]);
+    return self::padlock_generate($screen_id);
   }
 
   // Checks whether a given page is owned by the current user
@@ -134,6 +145,9 @@ HTML;
     if(!$screen_id){ 
       return false;
     }
+
+    $take_over = (bool)$take_over;
+    $screen_id = sanitize_title_for_query($screen_id);
 
     $current_user = wp_get_current_user(); 
     $lock = self::padlock_get($screen_id);
@@ -178,6 +192,7 @@ HTML;
   }
 
   private static function padlock_save($screen_id, $payload){
+    $screen_id = sanitize_title_for_query($screen_id);
     $keyring = self::keyring();
     $keyring[$screen_id] = $payload;
     return update_option(self::WP_OPTIONS_NAME, $keyring);
