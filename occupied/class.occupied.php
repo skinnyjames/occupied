@@ -194,10 +194,10 @@ HTML;
   private static function padlock_save($screen_id, $payload){
     $screen_id = sanitize_title_for_query($screen_id);
     $valid_payload = array(
-      'owner_id' => intval($lock['owner_id']),
-      'updated_at' =>  intval($lock['updated_at']),
-      'owner_avatar_url' => sanitize_text_field($lock['owner_avatar_url']),
-      'owner_display_name' => sanitize_text_field($lock['owner_display_name']),
+      'owner_id' => intval($payload['owner_id']),
+      'updated_at' =>  intval($payload['updated_at']),
+      'owner_avatar_url' => sanitize_text_field($payload['owner_avatar_url']),
+      'owner_display_name' => sanitize_text_field($payload['owner_display_name']),
     );
 
     $keyring = self::keyring();
