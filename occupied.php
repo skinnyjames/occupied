@@ -2,6 +2,7 @@
 /* 
 Plugin Name: occupied
 Plugin URI: https://github.com/skinnyjames/occupied
+Github Plugin URI: skinnyjames/occupied
 Description: custom page locking for WordPress admin pages
 Version: 0.1.0
 Author: williamtaft
